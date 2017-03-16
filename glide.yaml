@@ -1,0 +1,4 @@
+package: git.openstack.org/openstack/docker-machine-openstack
+import:
+- package: github.com/docker/machine
+- package: github.com/stretchr/testify

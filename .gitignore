@@ -1,0 +1,4 @@
+vendor/
+dist/
+.envrc
+.idea/

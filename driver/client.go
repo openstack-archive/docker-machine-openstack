@@ -400,7 +400,7 @@ func (c *GenericClient) getNovaNetworkFloatingIPs(d *Driver) ([]FloatingIP, erro
 	ips := []FloatingIP{}
 	err := pager.EachPage(func(page pagination.Page) (continue_paging bool, err error) {
 		continue_paging, err = true, nil
-		ipListing, err := compute_ips.ExtractFloatingIPs(page)
+		ipListing, _ := compute_ips.ExtractFloatingIPs(page)
 
 		for _, ip := range ipListing {
 			if ip.InstanceID == "" && ip.Pool == d.FloatingIpPool {
