@@ -27,3 +27,5 @@ testImport:
 - package: github.com/stretchr/testify
   subpackages:
   - assert
+ignore:
+  - git.openstack.org/openstack/docker-machine-openstack/driver

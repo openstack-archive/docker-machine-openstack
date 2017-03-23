@@ -1,5 +1,5 @@
-hash: f0fdc617a0337ac35ef7e13ce83e231286bb4636974151ac8a57680af8d064f7
-updated: 2017-03-23T15:12:37.058586603-04:00
+hash: 23ea93249b9a00310b9f06978542a6fd5c8f92df18d5cf5239496cac4de2ad95
+updated: 2017-03-23T16:56:29.980808847-04:00
 imports:
 - name: github.com/docker/docker
   version: a8a31eff10544860d2188dddabdee4d727545796
@@ -9,6 +9,9 @@ imports:
   version: 0f08d3c510bc8c2a2c087cabd6614d8776ca8687
   subpackages:
   - libmachine/drivers
+  - libmachine/drivers/plugin
+  - libmachine/drivers/plugin/localbinary
+  - libmachine/drivers/rpc
   - libmachine/log
   - libmachine/mcnflag
   - libmachine/mcnutils
