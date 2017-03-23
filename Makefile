@@ -23,7 +23,7 @@ depend: work
 depend-update: work
 	cd $(DEST) && glide update
 
-build:
+build: work
 	cd $(DEST) && go build
 
 test: unit functional
