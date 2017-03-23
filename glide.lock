@@ -1,5 +1,5 @@
-hash: 2ae414367804198c51ad47534bc4a00c8b68b2eddb850ffcfdf5f3a112b68b65
-updated: 2017-03-16T16:09:29.619642963-04:00
+hash: f0fdc617a0337ac35ef7e13ce83e231286bb4636974151ac8a57680af8d064f7
+updated: 2017-03-23T15:12:37.058586603-04:00
 imports:
 - name: github.com/docker/docker
   version: a8a31eff10544860d2188dddabdee4d727545796
@@ -9,9 +9,6 @@ imports:
   version: 0f08d3c510bc8c2a2c087cabd6614d8776ca8687
   subpackages:
   - libmachine/drivers
-  - libmachine/drivers/plugin
-  - libmachine/drivers/plugin/localbinary
-  - libmachine/drivers/rpc
   - libmachine/log
   - libmachine/mcnflag
   - libmachine/mcnutils
@@ -19,13 +16,11 @@ imports:
   - libmachine/state
   - libmachine/version
   - version
-- name: github.com/mitchellh/mapstructure
-  version: 740c764bc6149d3f1806231418adb9f52c11bcbf
-- name: github.com/rackspace/gophercloud
-  version: ce0f487f6747ab43c4e4404722df25349385bebd
+- name: github.com/gophercloud/gophercloud
+  version: 9a5595b8ffe429439c63781cdc312c254e4ad990
   subpackages:
   - openstack
-  - openstack/compute/v2/extensions/floatingip
+  - openstack/compute/v2/extensions/floatingips
   - openstack/compute/v2/extensions/keypairs
   - openstack/compute/v2/extensions/startstop
   - openstack/compute/v2/flavors
@@ -39,14 +34,6 @@ imports:
   - openstack/networking/v2/ports
   - openstack/utils
   - pagination
-  - rackspace
-  - rackspace/identity/v2/tokens
-  - testhelper
-  - testhelper/client
-- name: github.com/stretchr/testify
-  version: 4d4bfba8f1d1027c4fdbe371823030df51419987
-  subpackages:
-  - assert
 - name: golang.org/x/crypto
   version: beef0f4390813b96e8e68fd78570396d0f4751fc
   subpackages:
@@ -62,3 +49,7 @@ testImports:
   version: 792786c7400a136282c1664665ae0a8db921c6c2
   subpackages:
   - difflib
+- name: github.com/stretchr/testify
+  version: 4d4bfba8f1d1027c4fdbe371823030df51419987
+  subpackages:
+  - assert

@@ -11,19 +11,19 @@ import (
 	"github.com/docker/machine/libmachine/log"
 	"github.com/docker/machine/libmachine/mcnutils"
 	"github.com/docker/machine/libmachine/version"
-	"github.com/rackspace/gophercloud"
-	"github.com/rackspace/gophercloud/openstack"
-	compute_ips "github.com/rackspace/gophercloud/openstack/compute/v2/extensions/floatingip"
-	"github.com/rackspace/gophercloud/openstack/compute/v2/extensions/keypairs"
-	"github.com/rackspace/gophercloud/openstack/compute/v2/extensions/startstop"
-	"github.com/rackspace/gophercloud/openstack/compute/v2/flavors"
-	"github.com/rackspace/gophercloud/openstack/compute/v2/images"
-	"github.com/rackspace/gophercloud/openstack/compute/v2/servers"
-	"github.com/rackspace/gophercloud/openstack/identity/v2/tenants"
-	"github.com/rackspace/gophercloud/openstack/networking/v2/extensions/layer3/floatingips"
-	"github.com/rackspace/gophercloud/openstack/networking/v2/networks"
-	"github.com/rackspace/gophercloud/openstack/networking/v2/ports"
-	"github.com/rackspace/gophercloud/pagination"
+	"github.com/gophercloud/gophercloud"
+	"github.com/gophercloud/gophercloud/openstack"
+	compute_ips "github.com/gophercloud/gophercloud/openstack/compute/v2/extensions/floatingips"
+	"github.com/gophercloud/gophercloud/openstack/compute/v2/extensions/keypairs"
+	"github.com/gophercloud/gophercloud/openstack/compute/v2/extensions/startstop"
+	"github.com/gophercloud/gophercloud/openstack/compute/v2/flavors"
+	"github.com/gophercloud/gophercloud/openstack/compute/v2/images"
+	"github.com/gophercloud/gophercloud/openstack/compute/v2/servers"
+	"github.com/gophercloud/gophercloud/openstack/identity/v2/tenants"
+	"github.com/gophercloud/gophercloud/openstack/networking/v2/extensions/layer3/floatingips"
+	"github.com/gophercloud/gophercloud/openstack/networking/v2/networks"
+	"github.com/gophercloud/gophercloud/openstack/networking/v2/ports"
+	"github.com/gophercloud/gophercloud/pagination"
 )
 
 type Client interface {
@@ -134,7 +134,8 @@ func (c *GenericClient) StopInstance(d *Driver) error {
 }
 
 func (c *GenericClient) RestartInstance(d *Driver) error {
-	if result := servers.Reboot(c.Compute, d.MachineId, servers.SoftReboot); result.Err != nil {
+	opts := &servers.RebootOpts{Type: servers.SoftReboot}
+	if result := servers.Reboot(c.Compute, d.MachineId, opts); result.Err != nil {
 		return result.Err
 	}
 	return nil
@@ -356,7 +357,8 @@ func (c *GenericClient) assignNovaFloatingIP(d *Driver, floatingIP *FloatingIP) 
 		floatingIP.Ip = f.IP
 		floatingIP.Pool = f.Pool
 	}
-	return compute_ips.Associate(c.Compute, d.MachineId, floatingIP.Ip).Err
+	opts := &compute_ips.AssociateOpts{FloatingIP: floatingIP.Ip}
+	return compute_ips.AssociateInstance(c.Compute, d.MachineId, opts).Err
 }
 
 func (c *GenericClient) assignNeutronFloatingIP(d *Driver, floatingIP *FloatingIP) error {
@@ -379,7 +381,7 @@ func (c *GenericClient) assignNeutronFloatingIP(d *Driver, floatingIP *FloatingI
 		return nil
 	}
 	_, err = floatingips.Update(c.Network, floatingIP.Id, floatingips.UpdateOpts{
-		PortID: portID,
+		PortID: &portID,
 	}).Extract()
 	if err != nil {
 		return err
@@ -495,7 +497,13 @@ func (c *GenericClient) InitIdentityClient(d *Driver) error {
 		return nil
 	}
 
-	identity := openstack.NewIdentityV2(c.Provider)
+	identity, err := openstack.NewIdentityV2(c.Provider, gophercloud.EndpointOpts{
+		Region:       d.Region,
+		Availability: c.getEndpointType(d),
+	})
+	if err != nil {
+		return err
+	}
 	c.Identity = identity
 	return nil
 }
